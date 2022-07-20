@@ -1,0 +1,35 @@
+1. cài đặt môi trường Node.JS
+ // npm install --save-exact package@version   --> cài chính xác version
+    - download and setup NodeJS
+    - npm init  -> tạo file package.json
+    - cài đặt các thư viện:
+        - body-parser@1.19.0 : để viết api (lấy các tham số từ client truyền lên)
+        - dotenv@8.2.0 : lấy các tham số khai báo trong file môi trường bằng process.env.variable từ file .env
+        - ejs@3.1.5 : view engine
+        - express@4.17.1 : framework
+        -> npm install --save body-parser@1.19.0 dotenv@8.2.0 ejs@3.1.5 express@4.17.1
+
+        - @babel/core@7.12.10, @babel/preset-env@7.12.10, @babel/node@7.12.10 : trình biên dịch giúp viết code JS tất cả các version
+        - nodemon@2.0.7 : server tự động restart khi crlt + s (khi thay đổi file)
+        ->npm install --save-dev @babel/core@7.12.10 @babel/preset-env@7.12.10 @babel/node@7.12.10 nodemon@2.0.7
+
+2. create file:
+    .env : khai báo các biến môi trường, ko đẩy lên git vì cần bảo mật
+    .env.exam.ple : đẩy lên git có biến nhưng ko có giá trị
+    .gitignore : khai báo các file ko đẩy lên git
+    .babelrc : cấu hình cho trình complier
+
+3. cấu hình viewEngine
+    - tạo file viewEngine.js trong folder config 
+
+4. tạo route cho web:
+    - create file web.js in folder route
+
+5. viết file server.js
+
+5. cấu hình lại file package.json
+    - thêm start ở thẻ scripts
+    -> "start": "nodemon --exec ./node_modules/.bin/babel-node src/server.js"
+
+7. chạy server:
+    -> npm start
