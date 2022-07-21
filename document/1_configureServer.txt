@@ -19,7 +19,15 @@
     .gitignore : khai báo các file ko đẩy lên git
     .babelrc : cấu hình cho trình complier
 
-3. cấu hình viewEngine
+3. tạo mô hình MVC: trong src tạo các thư mục:
+    - config: chứa các file config: viewEngine.js
+    - controllers: chứa file homeController.js - xử lý các dữ liệu trước khi views
+    - public: chứa các file mà client có thể chọc vào dc
+    - route: chứa file điều hướng - web.js
+    - services:
+    - views: các file HTML, ejs,... Hiện thị trên borrows
+
+4. cấu hình viewEngine
     - tạo file viewEngine.js trong folder config 
 
 4. tạo route cho web:
