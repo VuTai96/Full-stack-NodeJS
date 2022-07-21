@@ -1,3 +1,6 @@
+làm việc với sequelize cli : giao tiếp qua dòng lệnh -> project vẫn chưa kết nối trực tiếp vs db
+document: https://sequelize.org/docs/v6/other-topics/migrations/
+
 1. cài đặt XAMPP để chạy mysql trên máy
 
 2. install package sequelize để kết nối với CSDL

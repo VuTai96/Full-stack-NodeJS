@@ -1,0 +1,39 @@
+làm việc với sequelize
+document: https://sequelize.org/docs/v6/getting-started/
+
+1. tạo file connectDB.js trong folder config, export connectDB 
+2. trong server.js 
+    import connectDB
+    thêm connectDB() sau các statement setup
+    chạy server, ở console xuất hiện: "Connection has been established successfully."
+     => kết nối thành công.
+
+3. lấy 1 rows từ DB và hiện thị ở homePage
+    - file index.js chứa export db: db là object chứa tất cả các model (user)
+    - ở homeController.js, import db from "../models" để sử dụng model
+        let data = await db.User.findAll(); để lấy tất cả các rows từ table users
+
+4. để tắt ko in ra file logging:
+    - ở config.json thêm key:value "logging": false
+    - ở file connectDB thêm logging: false
+        const sequelize = new Sequelize('babyshark', 'root', null, {
+            host: 'localhost',
+            dialect: 'mysql', 
+            logging: false
+         });
+
+5. render:
+    - ở homeController.homePage, truyên data xuống để render
+         const getHomePage = async (req, res) => {
+            try {
+                let data = await db.User.findAll();  // phải là db.User đúng với return trong file user.js
+                return res.render('homePage.ejs', { data: JSON.stringify(data) })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    - vào file homePage.ejs ở views để show data
+        <p>
+            <%=data%>
+        </p>
+
