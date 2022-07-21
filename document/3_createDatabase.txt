@@ -1,0 +1,24 @@
+mô hình db: 
+    https://docs.google.com/spreadsheets/d/175ts9y-bJGAwEUtVEFojJQ4nFCH_lIU0poA0wVjM_lk/edit#gid=0
+1. recreate table users
+    - vào XAMPP delete table user, sequelizemeta
+    - sửa các thuộc tính Use.init trong file user.js folder models:
+    - tương tự, check và sửa lại property của file create-user.js in folder migrations
+    -> npx sequelize-cli db:migrate
+        => tạo lại table trong db babayshark trên XAMPP
+        => xuất hiện bảng users
+
+2. tạo table allcode
+    - create file allcode.js in folder models
+    - copy code user.js và past vào allcode.js
+    - chỉnh sửa file allcode.js
+    - tương tự create and edit new file migration-create-allcode.js in folder migrations
+    -> npx sequelize-cli db:migrate
+        => tạo table trong db babayshark trên XAMPP
+        => xuất hiện thêm table allcode
+
+    - tương tự tạo table: schedule, booking, history, clinic, specialty
+    lưu ý: những model đứng độc lập -> thêm s cho tên table
+
+
+
