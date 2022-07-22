@@ -1,0 +1,44 @@
+
+1. Tạo 1 rout hiển thị crud.ejs kết hợp với bootstrap 4
+2. Tạo form trong crud.ejs để post data User
+3. hash password bằng cách sử dụng thư viện bcrypt hoặc sử dụng bcryptjs
+    -> npm install --save bcrypt@5.0.1
+    ở đây sử dụng bcryptjs@2.4.3
+    -> npm uninstall bcrypt : để remove bcrypt@5.0.1
+    -> npm install --save bcryptjs@2.4.3
+
+4. tạo file CRUDService.js trong folder services để xử lý code thay cho phần controller
+    - import bcrypt để hasnh password (ko cần Promise vì hash này là sync)
+            const hashPassword = (password) => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let hash = await bcrypt.hashSync(password, salt);
+                    resolve(hash)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+    - creat new row cho table user bằng cách import db from '../models/index' và viết hàm
+        const creatNewUser = async (data) => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let hashPasswordFromBcrypt = await hashPassword(data.password)
+                    await db.User.create({
+                        email: data.email,
+                        password: hashPasswordFromBcrypt,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        address: data.address,
+                        gender: data.gender === "1" ? true : false,
+                        roleId: data.roleId,
+                        phonenumber: data.phonenumber
+                    })
+                    resolve('>>> Created new user is done!')
+
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+

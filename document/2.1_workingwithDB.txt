@@ -4,6 +4,13 @@ document: https://sequelize.org/docs/v6/other-topics/migrations/
 
 0. Thêm file .sequelizerc ở thư mục root để chạy các lệnh teminal ở root
     https://mherman.org/blog/node-postgres-sequelize/
+    const path = require('path');
+    module.exports = {
+        'config': path.resolve('./src/config', 'config.json'),
+        'migrations-path': path.resolve('./src', 'migrations'),
+        'models-path': path.resolve('./src', 'models'),
+        'seeders-path': path.resolve('./src', 'seeders')
+    }
 
 1. cài đặt XAMPP để chạy mysql trên máy
 
