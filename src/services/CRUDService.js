@@ -34,7 +34,20 @@ const hashPassword = (password) => {
         }
     })
 }
+const readUsers = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let datauUser = await db.User.findAll({
+                raw: true //để lấy mỗi file mảng rows
+            })
+            resolve(datauUser)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
 module.exports = {
-    creatNewUser: creatNewUser
+    creatNewUser: creatNewUser,
+    readUsers: readUsers
 }

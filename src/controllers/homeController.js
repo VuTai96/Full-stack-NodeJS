@@ -20,10 +20,16 @@ const postCRUD = async (req, res) => {
     console.log(meseage)
     return res.send('post crud from server ')
 }
+const displayCRUD = async (req, res) => {
+    let dataUsers = await CRUDService.readUsers()
+    console.log(dataUsers)
+    return res.render('displayCRUD', { dataUsers: dataUsers })
+}
 
 module.exports = {
     getHomePage: getHomePage,
     getAboutPage: getAboutPage,
     getCRUD: getCRUD,
     postCRUD: postCRUD,
-}
+    displayCRUD: displayCRUD,
+} 

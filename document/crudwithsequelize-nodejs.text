@@ -1,3 +1,5 @@
+    https://www.npmjs.com/package/bcryptjs
+    https://sequelize.org/docs/v6/core-concepts/model-instances/
 
 1. Tạo 1 rout hiển thị crud.ejs kết hợp với bootstrap 4
 2. Tạo form trong crud.ejs để post data User
@@ -6,6 +8,7 @@
     ở đây sử dụng bcryptjs@2.4.3
     -> npm uninstall bcrypt : để remove bcrypt@5.0.1
     -> npm install --save bcryptjs@2.4.3
+
 
 4. tạo file CRUDService.js trong folder services để xử lý code thay cho phần controller
     - import bcrypt để hasnh password (ko cần Promise vì hash này là sync)
@@ -42,3 +45,7 @@
             })
         }
 
+5. dùng cú pháp db.User.findAll({raw:true}) để lấy tất cả các rows của table users
+    hiển thị chúng trong file display.ejs
+    route: web.js --> controller: homeController.displayCRUD --> services: CRUDService.readUsers
+                                                             --> views: displayCRUD.ejs
