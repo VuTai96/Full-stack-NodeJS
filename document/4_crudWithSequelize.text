@@ -44,8 +44,24 @@
                 }
             })
         }
+        
+    views: crud.ejs --submit--> route: web.js: router ./post-crud --> controller: homeController.postCRUD --> services: CRUDService.creatNewUser
+                                                                                                          --> return res.send('post crud from server ')
 
 5. dùng cú pháp db.User.findAll({raw:true}) để lấy tất cả các rows của table users
     hiển thị chúng trong file display.ejs
     route: web.js --> controller: homeController.displayCRUD --> services: CRUDService.readUsers
                                                              --> views: displayCRUD.ejs
+
+6. dùng cú pháp const user = await db.User.findOne({where: { id: userId }, raw: true}) để lấy 1 rows
+
+7. để update rows dùng cú pháp: 
+    await db.User.update({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        address: data.address
+    }, {
+        where: {
+            id: data.id
+        }
+    }); 

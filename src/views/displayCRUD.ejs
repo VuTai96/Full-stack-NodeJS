@@ -11,6 +11,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <style>
+        .myBtn {
+            height: 1.75rem;
+            width: 4rem;
+            padding: 0;
+        }
+
+        table td {
+            padding: .25rem !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,9 +31,11 @@
         <thead>
             <tr>
                 <th scope="col" class="col-3">Email</th>
-                <th scope="col" class="col-3">First name</th>
-                <th scope="col" class="col-3">Last name</th>
+                <th scope="col" class="col-2">First name</th>
+                <th scope="col" class="col-2">Last name</th>
                 <th scope="col" class="col-3">Address</th>
+                <th scope="col" class="col-2">Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -39,6 +52,12 @@
                     </td>
                     <td>
                         <%= dataUsers[i].address %>
+                    </td>
+                    <td>
+                        <a href="/edit-crud?id=<%=dataUsers[i].id %>" class="btn btn-warning myBtn"
+                            type="button">edit</a>
+                        <a class="btn btn-danger myBtn" type="button">delete</a>
+
                     </td>
                 </tr>
                 <% } %>

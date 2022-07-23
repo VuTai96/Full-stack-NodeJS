@@ -1,0 +1,26 @@
+1.  server.js  -->  app.use(bodyParser.json());
+                    app.use(bodyParser.urlencoded({ extended: true }));
+                        => có thể dùng params của request
+                    viewEngine(app); --> config : viewEngine.js
+                        => khai báo thư mục public
+                        => khai báo nơi viết các file ejs (chỉ có thể viết ở trong folder views)
+                    initWebRoutes(app); --> route : web.js
+                        => khai báo và xử lý các page điều hướng
+                    connectDB(); --> config : connectDB
+                        => kết nối db
+
+2. models : index.js --> module.exports db 
+                            => có thể import db để crud database của tất cả table được khai báo trong folder models
+
+3. migrations: 
+        => các file tạo table cho database bằng môi trường dòng lệnh sequelize-cli
+4. seeders: 
+        => các file tạo rows cho table bằng môi trường dòng lệnh sequelize-cli 
+
+
+5. post 1 new user vào table users:
+    views: crud.ejs --submit--> route: web.js: router ./post-crud --> controller: homeController.postCRUD --> services: CRUDService.creatNewUser
+                                                                                                          --> return res.send('post crud from server ')
+6. hiện thị tất cả các rows của table users
+    route: web.js --> controller: homeController.displayCRUD --> services: CRUDService.readUsers
+                                                             --> views: displayCRUD.ejs

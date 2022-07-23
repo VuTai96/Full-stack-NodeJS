@@ -47,7 +47,48 @@ const readUsers = async () => {
     })
 }
 
+const getUserInforByID = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await db.User.findOne({
+                where: { id: userId },
+                raw: true
+            })
+            if (user) {
+                resolve(user)
+            } else {
+                resolve({})
+            }
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+const updateUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await db.User.update({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                address: data.address
+            }, {
+                where: {
+                    id: data.id
+                }
+            });
+            console.log('Update user done!')
+            let dataUsers = await db.User.findAll({ raw: true })
+            resolve(dataUsers);
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 module.exports = {
     creatNewUser: creatNewUser,
-    readUsers: readUsers
+    readUsers: readUsers,
+    getUserInforByID: getUserInforByID,
+    updateUser: updateUser,
 }
