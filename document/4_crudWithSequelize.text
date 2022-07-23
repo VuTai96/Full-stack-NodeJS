@@ -65,3 +65,10 @@
             id: data.id
         }
     }); 
+
+8. để xóa rows dùng cú pháp: 
+        await db.User.destroy({
+            where: {
+                id: userId
+            }
+        });
