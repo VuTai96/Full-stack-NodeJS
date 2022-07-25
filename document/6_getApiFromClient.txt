@@ -1,0 +1,2 @@
+1. xử lý lỗi cors:
+https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/

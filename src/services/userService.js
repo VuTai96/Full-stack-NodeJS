@@ -11,7 +11,7 @@ const handleUserLogin = (email, password) => {
                 raw: true
             })
             if (user) {
-                let isPasswordTrue = await bcrypt.compareSync(password, user.password);
+                let isPasswordTrue = bcrypt.compareSync(password, user.password);
                 if (isPasswordTrue) {
                     delete user.password
                     data.errCode = 0;
