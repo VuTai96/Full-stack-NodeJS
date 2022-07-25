@@ -1,0 +1,10 @@
+creat file userControler.js in folder controller, userService.js in folder services
+sử dụng return sau để trả về dữ liệu cho client
+
+    return res.status(200).json({
+        errCode: data.errCode,
+        message: data.message,
+        user: data.user
+    })
+    
+sử dụng Postman để test
