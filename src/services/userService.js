@@ -37,7 +37,6 @@ const handleUserLogin = (email, password) => {
 const getAllUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         let dataUser = '';
-        console.log('>>>2 check id: ', typeof userId)
         try {
             if (userId.toLowerCase() === "all") {
                 dataUser = await db.User.findAll({
@@ -51,7 +50,6 @@ const getAllUser = (userId) => {
                 })
                 dataUser = dataUser ? dataUser : []
             }
-            console.log(dataUser)
             resolve(dataUser)
         } catch (error) {
             reject(error)
