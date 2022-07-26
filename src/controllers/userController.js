@@ -39,7 +39,32 @@ const handleGetAllUser = async (req, res) => {
     })
 }
 
+const handleCreatNewUser = async (req, res) => {
+    let newdata = req.body
+    console.log(newdata)
+    if (!newdata.email) {
+        return res.status(200).json({
+            errCode: 1,
+            message: 'Missing required parameter',
+        })
+    }
+    let check = await userService.checkExistUser(newdata)
+    console.log('>>>check', check)
+    if (!check) {
+        await userService.createNewUser(newdata)
+        return res.status(200).json({
+            errCode: 0,
+            message: `OK`,
+        })
+    }
+    return res.status(200).json({
+        errCode: 2,
+        message: `User's existed, plz try new user`,
+    })
+}
+
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
+    handleCreatNewUser: handleCreatNewUser,
 }
