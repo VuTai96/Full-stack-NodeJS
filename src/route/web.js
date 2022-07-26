@@ -14,7 +14,10 @@ let initWebRoutes = (app) => {
     router.get('/edit-crud', homeController.getEditCRUD)
     router.post('/put-crud', homeController.putCRUD)// chưa sử dụng dc put chưa sử dụng dc put
     router.get('/delete-crud', homeController.deleteCRUD)
+
     router.post('/api/login', userController.handleLogin)
+    router.post('/api/get-all-user', userController.handleGetAllUser)
+
 
 
 

@@ -1,6 +1,7 @@
 import db from "../models/index"
 import bcrypt from 'bcryptjs'
 
+
 const handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -33,7 +34,32 @@ const handleUserLogin = (email, password) => {
         }
     })
 }
-
+const getAllUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        let dataUser = '';
+        console.log('>>>2 check id: ', typeof userId)
+        try {
+            if (userId.toLowerCase() === "all") {
+                dataUser = await db.User.findAll({
+                    attributes: { exclude: ['password'] }
+                })
+            }
+            if (userId && userId.toLowerCase() !== "all") {
+                dataUser = await db.User.findOne({
+                    attributes: { exclude: ['password'] },
+                    where: { id: userId }
+                })
+                dataUser = dataUser ? dataUser : []
+            }
+            console.log(dataUser)
+            resolve(dataUser)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
-    handleUserLogin: handleUserLogin
+    handleUserLogin: handleUserLogin,
+    getAllUser: getAllUser
+
 }
