@@ -13,11 +13,29 @@ const hashPassword = (password) => {
     })
 }
 const checkExistUser = (data) => {
+
     return new Promise(async (resolve, reject) => {
         try {
             let isExistUser = false;
             let user = await db.User.findOne({
                 where: { email: data.email }
+            })
+            if (user) {
+                isExistUser = true
+            }
+            resolve(isExistUser)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+const checkExistUserById = (data) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            let isExistUser = false;
+            let user = await db.User.findOne({
+                where: { id: data.id }
             })
             if (user) {
                 isExistUser = true
@@ -104,10 +122,73 @@ const createNewUser = (data) => {
         }
     })
 }
+const deleteUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const code = {};
+            if (!data?.id) {
+                code.errCode = 1
+                code.message = 'Missing parameter'
+                resolve(code)
+                return;
+            }
+            let isExistUser = await checkExistUserById(data)
+            if (!isExistUser) {
+                code.errCode = 2
+                code.message = `UserId = ${data.id} is not exist, plz try another id`
+                resolve(code)
+                return;
+            }
+            await db.User.destroy({
+                where: { id: data.id }
+            })
+            code.errCode = 0
+            code.message = `Done! Deleted userId: ${data.id}!`
+            resolve(code)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+const editUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const code = {};
+            if (!data?.id) {
+                code.errCode = 1
+                code.message = 'Missing parameter'
+                resolve(code)
+                return;
+            }
+            let isExistUser = await checkExistUserById(data)
+            if (!isExistUser) {
+                code.errCode = 2
+                code.message = `UserId = ${data.id} is not exist, plz try another id`
+                resolve(code)
+                return;
+            }
+            await db.User.update({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                address: data.address
+            }, {
+                where: {
+                    id: data.id
+                }
+            });
+            code.errCode = 0
+            code.message = `Done! Updated userId: ${data.id}!`
+            resolve(code)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUser: getAllUser,
     checkExistUser: checkExistUser,
     createNewUser: createNewUser,
-
+    deleteUser: deleteUser,
+    editUser: editUser
 }
