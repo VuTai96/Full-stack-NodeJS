@@ -17,7 +17,7 @@ let initWebRoutes = (app) => {
 
     router.post('/api/login', userController.handleLogin)
     router.get('/api/get-all-user', userController.handleGetAllUser)
-    router.post('/api/creat-new-user', userController.handleCreatNewUser)
+    router.post('/api/create-new-user', userController.handleCreatNewUser)
     router.put('/api/edit-user', userController.handleEditUser)
     router.delete('/api/delete-user', userController.handleDeleteUser)
 

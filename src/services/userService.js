@@ -123,6 +123,7 @@ const createNewUser = (data) => {
     })
 }
 const deleteUser = (data) => {
+    console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
             const code = {};
