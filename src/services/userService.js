@@ -155,6 +155,7 @@ const editUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             const code = {};
+            console.log('check data: ', data, 'check id', data.id)
             if (!data?.id) {
                 code.errCode = 1
                 code.message = 'Missing parameter'
@@ -185,11 +186,34 @@ const editUser = (data) => {
         }
     })
 }
+const getAllCodeService = (type) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!type) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing params'
+                })
+            } else {
+                let response = await db.Allcode.findAll({
+                    where: { type: type }
+                })
+                resolve({
+                    errCode: 0,
+                    data: response
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUser: getAllUser,
     checkExistUser: checkExistUser,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
-    editUser: editUser
+    editUser: editUser,
+    getAllCodeService: getAllCodeService
 }

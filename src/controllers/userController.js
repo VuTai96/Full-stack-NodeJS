@@ -22,8 +22,6 @@ const handleLogin = async (req, res) => {
 }
 const handleGetAllUser = async (req, res) => {
     let id = req.query.id; //ALL or id
-    console.log('>>>check req:', req)
-    console.log('>>>check id: ', id)
     if (!id) {
         return res.status(200).json({
             errCode: 1,
@@ -41,7 +39,6 @@ const handleGetAllUser = async (req, res) => {
 
 const handleCreatNewUser = async (req, res) => {
     let newdata = req.body
-    console.log(newdata)
     if (!newdata.email) {
         return res.status(200).json({
             errCode: 1,
@@ -49,7 +46,6 @@ const handleCreatNewUser = async (req, res) => {
         })
     }
     let check = await userService.checkExistUser(newdata)
-    console.log('>>>check', check)
     if (!check) {
         await userService.createNewUser(newdata)
         return res.status(200).json({
@@ -72,10 +68,27 @@ const handleEditUser = async (req, res) => {
     let message = await userService.editUser(req.body)
     return res.status(200).json(message)
 }
+
+const getAllCode = async (req, res) => {
+    try {
+        let data = await userService.getAllCodeService(req.query.type)
+        return res.status(200).json(data)
+
+    } catch (e) {
+        console.log('>>> getAllcode have error: ', e)
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from server!'
+        })
+    }
+}
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
     handleCreatNewUser: handleCreatNewUser,
     handleEditUser: handleEditUser,
-    handleDeleteUser: handleDeleteUser
+    handleDeleteUser: handleDeleteUser,
+
+    getAllCode: getAllCode,
+
 }
