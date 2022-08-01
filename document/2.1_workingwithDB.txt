@@ -60,3 +60,29 @@ document: https://sequelize.org/docs/v6/other-topics/migrations/
     -> npx sequelize-cli db:seed:all
     - check lại DB trên XAMPP -> đã có data vs id =1.
 
+10. Update type column:
+    trong file seeders, sửa:
+        module.exports = {
+            up: (queryInterface, Sequelize) => {
+                return Promise.all([
+                    queryInterface.changeColumn('your table name ', 'name', {
+                        type: Sequelize.TEXT,
+                        allowNull: true,
+                    }, {
+                        transaction,
+                    })
+                ])
+            },
+
+            down: (queryInterface, Sequelize) => {
+                return Promise.all([
+                    queryInterface.changeColumn('your table name ', 'name', {
+                        type: Sequelize.STRING,
+                        allowNull: true,
+                    }, {
+                        transaction,
+                    })
+                ])
+            }
+        };
+    -> npx sequelize-cli db:seed:all => vào XAMPP xem thành quả

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-
+    //tạo 1 row mới
     return queryInterface.bulkInsert('Users', [{
       email: 'admin@example.com',
       password: '123456',
@@ -13,6 +13,13 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
+    //đổi type của gender sang thành Sequelize.STRING
+    // return Promise.all([
+    //   queryInterface.changeColumn('users', 'gender', {
+    //     type: Sequelize.STRING,
+    //     allowNull: true,
+    //   })
+    // ])
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -22,5 +29,11 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    // return Promise.all([
+    //   queryInterface.changeColumn('your table name ', 'name', {
+    //     type: Sequelize.STRING,
+    //     allowNull: true,
+    //   })
+    // ])
   }
 };
