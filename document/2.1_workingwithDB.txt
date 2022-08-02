@@ -86,3 +86,10 @@ document: https://sequelize.org/docs/v6/other-topics/migrations/
             }
         };
     -> npx sequelize-cli db:seed:all => vào XAMPP xem thành quả
+
+    C2: https://stackoverflow.com/questions/62667269/sequelize-js-how-do-we-change-column-type-in-migration/62669213#62669213
+        - tạo 1 file migrations mới copy trong link vào file
+        -> npx sequelize-cli db:migrate\
+
+11. add 1 column: 
+    https://stackoverflow.com/questions/46357533/how-to-add-delete-new-columns-in-sequelize-cli/46357631#46357631 

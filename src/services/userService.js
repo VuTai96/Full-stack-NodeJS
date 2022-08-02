@@ -125,7 +125,6 @@ const createNewUser = (data) => {
     })
 }
 const deleteUser = (data) => {
-    console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
             const code = {};
@@ -157,7 +156,6 @@ const editUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             const code = {};
-            console.log('check data: ', data, 'check id', data.id)
             if (!data?.id) {
                 code.errCode = 1
                 code.message = 'Missing parameter'
@@ -179,7 +177,7 @@ const editUser = (data) => {
                 roleId: data.roleId,
                 positionId: data.positionId,
                 phonenumber: data.phonenumber,
-                // image: data.image
+                image: data.image
             }, {
                 where: {
                     id: data.id
