@@ -174,7 +174,12 @@ const editUser = (data) => {
             await db.User.update({
                 firstName: data.firstName,
                 lastName: data.lastName,
-                address: data.address
+                address: data.address,
+                gender: data.gender,
+                roleId: data.roleId,
+                positionId: data.positionId,
+                phonenumber: data.phonenumber,
+                // image: data.image
             }, {
                 where: {
                     id: data.id
