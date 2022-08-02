@@ -201,7 +201,7 @@ const getAllCodeService = (type) => {
                 })
             } else {
                 let response = await db.Allcode.findAll({
-                    where: { type: type }
+                    where: { type: type.toUpperCase() }
                 })
                 resolve({
                     errCode: 0,
