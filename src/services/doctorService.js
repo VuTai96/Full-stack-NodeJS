@@ -28,7 +28,55 @@ const getTopDoctorHome = (limitInput) => {
         }
     })
 }
+const getAllDoctorsService = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let doctors = await db.User.findAll({
+                where: { roleId: 'R2' },
+                attributes: {
+                    exclude: ['password', 'image']
+                },
+            })
+            resolve({
+                errCode: 0,
+                doctors: doctors || []
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+const createInforDoctor = (infor) => {
+    return new Promise(async (resolve, reject) => {
+        try {
 
+            if (infor.doctorId && infor.contentHTML && infor.contentMarkdown) {
+                console.log('vao db')
+                await db.Markdown.create({
+                    contentHTML: infor.contentHTML,
+                    contentMarkdown: infor.contentMarkdown,
+                    description: infor.description,
+                    doctorId: infor.doctorId
+                })
+                resolve({
+                    errCode: 0,
+                    message: 'post infor doctor done!'
+                })
+                return
+            }
+            resolve({
+                errCode: 1,
+                message: 'Missing parameter!'
+            })
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
 module.exports = {
-    getTopDoctorHome: getTopDoctorHome
+    getTopDoctorHome: getTopDoctorHome,
+    getAllDoctorsService: getAllDoctorsService,
+    createInforDoctor: createInforDoctor
 }
