@@ -51,7 +51,6 @@ const createInforDoctor = (infor) => {
         try {
 
             if (infor.doctorId && infor.contentHTML && infor.contentMarkdown) {
-                console.log('vao db')
                 await db.Markdown.create({
                     contentHTML: infor.contentHTML,
                     contentMarkdown: infor.contentMarkdown,
@@ -75,8 +74,44 @@ const createInforDoctor = (infor) => {
     })
 
 }
+const getDetailDoctorService = async (reqQuery) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (reqQuery.id) {
+                let response = await db.User.findOne({
+                    where: {
+                        id: reqQuery.id
+                    },
+                    attributes: {
+                        exclude: ['password', 'image'],
+                    },
+                    include: [
+                        { model: db.Markdown }
+                    ],
+                    raw: true, //ko có raw = true --> ko get dc data mặc dù đã thêm ở file config
+                    nest: true
+                })
+
+                console.log(response)
+                resolve({
+                    errCode: 0,
+                    data: response
+                })
+                return
+            }
+            resolve({
+                errCode: 1,
+                message: 'Missing parameter!'
+            })
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctorsService: getAllDoctorsService,
-    createInforDoctor: createInforDoctor
+    createInforDoctor: createInforDoctor,
+    getDetailDoctorService: getDetailDoctorService
 }
