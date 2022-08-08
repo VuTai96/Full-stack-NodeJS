@@ -86,7 +86,9 @@ const getDetailDoctorService = async (reqQuery) => {
                         exclude: ['password'],
                     },
                     include: [
-                        { model: db.Markdown }
+                        { model: db.Markdown },
+                        { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
                     ],
                     raw: true, //ko có raw = true --> ko get dc data mặc dù đã thêm ở file config
                     nest: true
@@ -110,9 +112,43 @@ const getDetailDoctorService = async (reqQuery) => {
         }
     })
 }
+const updateInforDoctor = (infor) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            if (infor.doctorId && infor.contentHTML && infor.contentMarkdown) {
+                await db.Markdown.update({
+                    contentHTML: infor.contentHTML,
+                    contentMarkdown: infor.contentMarkdown,
+                    description: infor.description,
+                    doctorId: infor.doctorId
+                },
+                    {
+                        where: {
+                            doctorId: infor.doctorId
+                        }
+                    })
+                resolve({
+                    errCode: 0,
+                    message: 'update infor doctor done!'
+                })
+                return
+            }
+            resolve({
+                errCode: 1,
+                message: 'Missing parameter!'
+            })
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctorsService: getAllDoctorsService,
     createInforDoctor: createInforDoctor,
-    getDetailDoctorService: getDetailDoctorService
+    getDetailDoctorService: getDetailDoctorService,
+    updateInforDoctor: updateInforDoctor
 }

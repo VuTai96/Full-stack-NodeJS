@@ -37,6 +37,18 @@ const postInforDoctor = async (req, res) => {
         })
     }
 }
+const updateInforDoctor = async (req, res) => {
+    try {
+        let response = await doctorService.updateInforDoctor(req.body)
+        return res.status(200).json(response)
+    } catch (error) {
+        console.log('updateInforDoctor error: ', error)
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Update infor doctor error from server'
+        })
+    }
+}
 const getDetailDoctorById = async (req, res) => {
     try {
         let infor = await doctorService.getDetailDoctorService(req.query)
@@ -53,5 +65,6 @@ module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctors: getAllDoctors,
     postInforDoctor: postInforDoctor,
-    getDetailDoctorById: getDetailDoctorById
+    getDetailDoctorById: getDetailDoctorById,
+    updateInforDoctor: updateInforDoctor
 }
