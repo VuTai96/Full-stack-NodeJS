@@ -1,11 +1,7 @@
 import doctorService from '../services/doctorService';
 
 const getTopDoctorHome = async (req, res) => {
-    let limit = 10;
-    if (req.query?.limit) {
-        limit = req.query.limit
-    }
-    console.log(limit)
+    let limit = req.query?.limit && req.query?.limit !== 'undefined' || 10;
     try {
         let doctors = await doctorService.getTopDoctorHome(+limit)
         return res.status(200).json(doctors)

@@ -83,7 +83,7 @@ const getDetailDoctorService = async (reqQuery) => {
                         id: reqQuery.id
                     },
                     attributes: {
-                        exclude: ['password', 'image'],
+                        exclude: ['password'],
                     },
                     include: [
                         { model: db.Markdown }
@@ -91,8 +91,9 @@ const getDetailDoctorService = async (reqQuery) => {
                     raw: true, //ko có raw = true --> ko get dc data mặc dù đã thêm ở file config
                     nest: true
                 })
-
-                console.log(response)
+                let uint8Array = new Uint8Array(response.image)
+                let deco = new TextDecoder().decode(uint8Array)
+                response.image = deco
                 resolve({
                     errCode: 0,
                     data: response
