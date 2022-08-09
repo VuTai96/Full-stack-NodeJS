@@ -1,4 +1,8 @@
 import db from '../models/index'
+import _ from 'lodash'
+require('dotenv').config();
+
+const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE
 
 const getTopDoctorHome = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -145,10 +149,60 @@ const updateInforDoctor = (infor) => {
     })
 
 }
+const bulkCreateSchedule = (reqBody) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!reqBody.schedule) {
+                resolve({
+                    errCode: 1,
+                    message: 'bulkCreateSchedule missing require param !'
+                })
+            } else {
+                let schedule = reqBody.schedule
+                if (schedule?.length > 0) {
+                    schedule = schedule.map(item => {
+                        item.maxNumber = MAX_NUMBER_SCHEDULE
+                        return item
+                    })
+                    // console.log('schedule', schedule)
+                    //findAll for check existing
+                    let existing = await db.Schedule.findAll({
+                        where: { doctorId: schedule[0].doctorId, date: (new Date(schedule[0].date)).getTime() },
+                        attributes: ['doctorId', 'date', 'timeType', 'maxNumber']
+                    })
+                    //format existing
+                    existing = existing.map(item => {
+                        item.date = (new Date(item.date)).getTime()
+                        return item
+                    })
+                    // console.log('existing', existing)
+                    //take different item of schedule and existing
+                    let diff = _.differenceWith(schedule, existing, (a, b) => {
+                        return a.date === b.date && a.timeType === b.timeType
+                    })
+                    // console.log('diff', diff)
+                    //create diff into database
+                    if (diff?.length > 0) {
+                        await db.Schedule.bulkCreate(diff)
+                    }
+                }
+                resolve({
+                    errCode: 0,
+                    message: 'bulkCreateSchedule success'
+                })
+            }
+
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctorsService: getAllDoctorsService,
     createInforDoctor: createInforDoctor,
     getDetailDoctorService: getDetailDoctorService,
-    updateInforDoctor: updateInforDoctor
+    updateInforDoctor: updateInforDoctor,
+    bulkCreateSchedule: bulkCreateSchedule
 }
