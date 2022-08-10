@@ -159,12 +159,12 @@ const bulkCreateSchedule = (reqBody) => {
                 })
             } else {
                 let schedule = reqBody.schedule
-                if (schedule?.length > 0) {
+                if (schedule?.length > 0 && schedule[0].date) {
                     schedule = schedule.map(item => {
                         item.maxNumber = MAX_NUMBER_SCHEDULE
                         return item
                     })
-                    // console.log('schedule', schedule)
+                    //console.log('schedule', schedule)
                     //findAll for check existing
                     let existing = await db.Schedule.findAll({
                         where: { doctorId: schedule[0].doctorId, date: (new Date(schedule[0].date)).getTime() },
@@ -172,27 +172,56 @@ const bulkCreateSchedule = (reqBody) => {
                     })
                     //format existing
                     existing = existing.map(item => {
-                        item.date = (new Date(item.date)).getTime()
+                        item.date = +item.date
                         return item
                     })
-                    // console.log('existing', existing)
+                    //console.log('existing', existing)
                     //take different item of schedule and existing
                     let diff = _.differenceWith(schedule, existing, (a, b) => {
                         return a.date === b.date && a.timeType === b.timeType
                     })
-                    // console.log('diff', diff)
+                    //console.log('diff', diff)
                     //create diff into database
                     if (diff?.length > 0) {
                         await db.Schedule.bulkCreate(diff)
                     }
+                    resolve({
+                        errCode: 0,
+                        message: 'bulkCreateSchedule success'
+                    })
+                } else {
+                    resolve({
+                        errCode: 1,
+                        message: 'bulkCreateSchedule missing require param !'
+                    })
                 }
-                resolve({
-                    errCode: 0,
-                    message: 'bulkCreateSchedule success'
-                })
             }
 
 
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+const getScheduleDoctorByDate = (doctorId, date) => {
+    console.log(doctorId, date)
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    message: 'getScheduleDoctorByDate missing parameter'
+                })
+            } else {
+                let dataSchedule = await db.Schedule.findAll({
+                    where: { doctorId, date }
+                })
+                dataSchedule ? dataSchedule : []
+                resolve({
+                    errCode: 0,
+                    data: dataSchedule
+                })
+            }
         } catch (error) {
             reject(error)
         }
@@ -204,5 +233,6 @@ module.exports = {
     createInforDoctor: createInforDoctor,
     getDetailDoctorService: getDetailDoctorService,
     updateInforDoctor: updateInforDoctor,
-    bulkCreateSchedule: bulkCreateSchedule
+    bulkCreateSchedule: bulkCreateSchedule,
+    getScheduleDoctorByDate: getScheduleDoctorByDate
 }
