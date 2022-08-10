@@ -53,25 +53,74 @@ const getAllDoctorsService = () => {
 const createInforDoctor = (infor) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log(infor)
+            if (!infor.doctorId || !infor.contentHTML || !infor.contentMarkdown ||
+                !infor.selectedPrice || !infor.selectedPayment || !infor.selectedProvince ||
+                !infor.nameClinic || !infor.addressClinic || !infor.note) {
 
-            if (infor.doctorId && infor.contentHTML && infor.contentMarkdown) {
-                await db.Markdown.create({
-                    contentHTML: infor.contentHTML,
-                    contentMarkdown: infor.contentMarkdown,
-                    description: infor.description,
-                    doctorId: infor.doctorId
+                resolve({
+                    errCode: 1,
+                    message: 'Missing parameter!'
                 })
+            } else {
+                //Markdown
+                let resMarkdown = await db.Markdown.findOne({
+                    where: { doctorId: infor.doctorId }
+                })
+                if (resMarkdown) {
+                    await db.Markdown.update({
+                        contentHTML: infor.contentHTML,
+                        contentMarkdown: infor.contentMarkdown,
+                        description: infor.description,
+                    },
+                        {
+                            where: {
+                                doctorId: infor.doctorId
+                            }
+                        })
+                } else {
+                    await db.Markdown.create({
+                        contentHTML: infor.contentHTML,
+                        contentMarkdown: infor.contentMarkdown,
+                        description: infor.description,
+                        doctorId: infor.doctorId
+                    })
+                }
+
+                //Doctor_infor
+                let resDoctorInfor = await db.Doctor_Infor.findOne({
+                    where: { doctorId: infor.doctorId }
+                })
+                if (resDoctorInfor) {
+                    await db.Doctor_Infor.update({
+                        priceId: infor.selectedPrice,
+                        provinceId: infor.selectedProvince,
+                        paymentId: infor.selectedPayment,
+                        addressClinic: infor.addressClinic,
+                        nameClinic: infor.nameClinic,
+                        note: infor.note
+                    },
+                        {
+                            where: {
+                                doctorId: infor.doctorId
+                            }
+                        })
+                } else {
+                    await db.Doctor_Infor.create({
+                        doctorId: infor.doctorId,
+                        priceId: infor.selectedPrice,
+                        provinceId: infor.selectedProvince,
+                        paymentId: infor.selectedPayment,
+                        addressClinic: infor.addressClinic,
+                        nameClinic: infor.nameClinic,
+                        note: infor.note
+                    })
+                }
                 resolve({
                     errCode: 0,
                     message: 'post infor doctor done!'
                 })
-                return
             }
-            resolve({
-                errCode: 1,
-                message: 'Missing parameter!'
-            })
-
         } catch (error) {
             reject(error)
         }
@@ -119,8 +168,15 @@ const getDetailDoctorService = async (reqQuery) => {
 const updateInforDoctor = (infor) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (infor.doctorId && infor.contentHTML && infor.contentMarkdown &&
+                infor.selectedPrice && infor.selectedPayment && infor.selectedProvince &&
+                infor.nameClinic && infor.addressClinic && infor.note) {
+                let response = await db.Markdown.findOne({
+                    where: { doctorId: infor.doctorId }
+                })
+                if (response) {
 
-            if (infor.doctorId && infor.contentHTML && infor.contentMarkdown) {
+                }
                 await db.Markdown.update({
                     contentHTML: infor.contentHTML,
                     contentMarkdown: infor.contentMarkdown,
@@ -204,7 +260,6 @@ const bulkCreateSchedule = (reqBody) => {
     })
 }
 const getScheduleDoctorByDate = (doctorId, date) => {
-    console.log(doctorId, date)
     return new Promise(async (resolve, reject) => {
         try {
             if (!doctorId || !date) {
