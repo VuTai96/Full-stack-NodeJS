@@ -141,7 +141,19 @@ const getDetailDoctorService = async (reqQuery) => {
                     include: [
                         { model: db.Markdown },
                         { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
-                        { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                        { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
+
+                        {
+                            model: db.Doctor_Infor,
+                            attributes: {
+                                exclude: ['doctorId', 'createdAt', 'updatedAt', 'id']
+                            },
+                            include: [
+                                { model: db.Allcode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] },
+                                { model: db.Allcode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] },
+                                { model: db.Allcode, as: 'paymentTypeData', attributes: ['valueEn', 'valueVi'] },
+                            ]
+                        },
                     ],
                     raw: true, //ko có raw = true --> ko get dc data mặc dù đã thêm ở file config
                     nest: true
@@ -151,7 +163,7 @@ const getDetailDoctorService = async (reqQuery) => {
                 response.image = deco
                 resolve({
                     errCode: 0,
-                    data: response
+                    data: response || {}
                 })
                 return
             }
