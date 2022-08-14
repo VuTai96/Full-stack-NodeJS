@@ -1,5 +1,5 @@
 import db from '../models/index'
-import _ from 'lodash'
+import _, { reject } from 'lodash'
 require('dotenv').config();
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE
@@ -53,7 +53,6 @@ const getAllDoctorsService = () => {
 const createInforDoctor = (infor) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(infor)
             if (!infor.doctorId || !infor.contentHTML || !infor.contentMarkdown ||
                 !infor.selectedPrice || !infor.selectedPayment || !infor.selectedProvince ||
                 !infor.nameClinic || !infor.addressClinic || !infor.note) {
@@ -299,6 +298,38 @@ const getScheduleDoctorByDate = (doctorId, date) => {
         }
     })
 }
+const getExtraInforDoctorById = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId) {
+                resolve({
+                    errCode: 1,
+                    message: 'getExtraInforDoctorById missing parameter'
+                })
+            } else {
+                let extraInfor = await db.Doctor_Infor.findOne({
+                    where: { doctorId: doctorId },
+                    include: [
+                        { model: db.Allcode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'paymentTypeData', attributes: ['valueEn', 'valueVi'] }
+                    ],
+                    raw: true,
+                    nest: true
+                })
+
+                resolve({
+                    errCode: 0,
+                    data: extraInfor || {}
+                })
+            }
+
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctorsService: getAllDoctorsService,
@@ -306,5 +337,6 @@ module.exports = {
     getDetailDoctorService: getDetailDoctorService,
     updateInforDoctor: updateInforDoctor,
     bulkCreateSchedule: bulkCreateSchedule,
-    getScheduleDoctorByDate: getScheduleDoctorByDate
+    getScheduleDoctorByDate: getScheduleDoctorByDate,
+    getExtraInforDoctorById: getExtraInforDoctorById
 }
