@@ -330,6 +330,56 @@ const getExtraInforDoctorById = (doctorId) => {
         }
     })
 }
+const getProfileDoctorById = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId) {
+                resolve({
+                    errCode: 1,
+                    message: 'getProfileDoctorById missing parameter'
+                })
+            } else {
+                let profileDoctor = await db.User.findOne({
+                    where: { id: doctorId },
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    include: [
+                        // { model: db.Allcode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] },
+                        // { model: db.Allcode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Markdown, attributes: ['description'] },
+                        {
+                            model: db.Doctor_Infor,
+                            attributes: {
+                                exclude: ['id', 'doctorId']
+                            },
+                            include: [
+                                { model: db.Allcode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] },
+                                { model: db.Allcode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] },
+
+                            ]
+                        }
+                    ],
+                    raw: true,
+                    nest: true
+                })
+                let uint8Array = new Uint8Array(profileDoctor.image)
+                let deco = new TextDecoder().decode(uint8Array)
+                profileDoctor.image = deco
+
+                resolve({
+                    errCode: 0,
+                    data: profileDoctor || {}
+                })
+            }
+
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctorsService: getAllDoctorsService,
@@ -338,5 +388,6 @@ module.exports = {
     updateInforDoctor: updateInforDoctor,
     bulkCreateSchedule: bulkCreateSchedule,
     getScheduleDoctorByDate: getScheduleDoctorByDate,
-    getExtraInforDoctorById: getExtraInforDoctorById
+    getExtraInforDoctorById: getExtraInforDoctorById,
+    getProfileDoctorById: getProfileDoctorById
 }
