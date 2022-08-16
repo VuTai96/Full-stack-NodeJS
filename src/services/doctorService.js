@@ -283,6 +283,7 @@ const getScheduleDoctorByDate = (doctorId, date) => {
                     where: { doctorId, date },
                     include: [
                         { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.User, as: 'dataDoctor', attributes: ['firstName', 'lastName'] },
                     ],
                     raw: true,
                     nest: true
