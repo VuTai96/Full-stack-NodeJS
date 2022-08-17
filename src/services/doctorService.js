@@ -50,16 +50,29 @@ const getAllDoctorsService = () => {
         }
     })
 }
+const checkInputInforDoctor = (dataInput) => {
+    let arrI = ['doctorId', 'contentHTML', 'contentMarkdown',
+        'selectedPrice', 'selectedPayment', 'selectedProvince',
+        'nameClinic', 'addressClinic', 'note', 'selectedSpecialty',]//'selectedClinic'
+    let isValid = true
+    let element = ''
+    for (let i = 0; i < arrI.length; i++) {
+        if (!dataInput[arrI[i]]) {
+            isValid = false
+            element = arrI[i]
+            break
+        }
+    }
+    return { isValid, element }
+}
 const createInforDoctor = (infor) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!infor.doctorId || !infor.contentHTML || !infor.contentMarkdown ||
-                !infor.selectedPrice || !infor.selectedPayment || !infor.selectedProvince ||
-                !infor.nameClinic || !infor.addressClinic || !infor.note) {
-
+            let { isValid, element } = checkInputInforDoctor(infor)
+            if (!isValid) {
                 resolve({
                     errCode: 1,
-                    message: 'Missing parameter!'
+                    message: `Missing parameter: ${element}!`
                 })
             } else {
                 //Markdown
@@ -97,7 +110,9 @@ const createInforDoctor = (infor) => {
                         paymentId: infor.selectedPayment,
                         addressClinic: infor.addressClinic,
                         nameClinic: infor.nameClinic,
-                        note: infor.note
+                        note: infor.note,
+                        specialtyId: infor.selectedSpecialty,
+                        clinicId: infor.selectedClinic
                     },
                         {
                             where: {
@@ -112,7 +127,9 @@ const createInforDoctor = (infor) => {
                         paymentId: infor.selectedPayment,
                         addressClinic: infor.addressClinic,
                         nameClinic: infor.nameClinic,
-                        note: infor.note
+                        note: infor.note,
+                        specialtyId: infor.selectedSpecialty,
+                        clinicId: infor.selectedClinic
                     })
                 }
                 resolve({
