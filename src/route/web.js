@@ -39,6 +39,7 @@ let initWebRoutes = (app) => {
     router.post('/api/verify-book-appointment', patinetControler.postVerifyBookAppointment)
 
     router.post('/api/creat-new-specialty', specialtyController.creatSpecialty)
+    router.get('/api/get-all-specialty', specialtyController.getAllSpecialty)
 
 
 

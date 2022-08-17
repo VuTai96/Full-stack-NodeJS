@@ -1,7 +1,6 @@
 const db = require("../models")
 
 const creatSpecialty = (data) => {
-    console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.name || !data.imageBase64 || !data.descriptionHTML || !data.descriptionMarkdown) {
@@ -15,8 +14,8 @@ const creatSpecialty = (data) => {
                     defaults: {
                         name: data.email,
                         image: data.imageBase64,
-                        descriptionHTML: data.decriptionHTML,
-                        descriptionMarkdown: data.decriptionMarkdown
+                        descriptionHTML: data.descriptionHTML,
+                        descriptionMarkdown: data.descriptionMarkdown
                     },
                 });
                 if (!created) {
@@ -46,6 +45,33 @@ const creatSpecialty = (data) => {
         }
     })
 }
+const getAllSpecialty = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response = await db.Specialty.findAll()
+            if (response) {
+                response.map((item, index) => {
+                    let uint8Array = new Uint8Array(item.image)
+                    let deco = new TextDecoder().decode(uint8Array)
+                    response[index].image = deco
+                })
+                resolve({
+                    errCode: 0,
+                    errMessage: 'getAllSpecialty is success!',
+                    data: response
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'getAllSpecialty is error!',
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
-    creatSpecialty
+    creatSpecialty,
+    getAllSpecialty
 }
