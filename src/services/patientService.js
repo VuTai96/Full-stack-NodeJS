@@ -14,7 +14,8 @@ const patientBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.email || !data.doctorId || !data.timeType || !data.date
-                || !data.fullName) {
+                || !data.fullName || !data.selectedGender || !data.address
+                || !data.fullName || !data.phoneNumber) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
@@ -35,7 +36,11 @@ const patientBookAppointment = (data) => {
                     where: { email: data.email },
                     defaults: {
                         email: data.email,
-                        roleId: 'R3'
+                        roleId: 'R3',
+                        gender: data.selectedGender,
+                        address: data.address,
+                        firstName: data.fullName,
+                        phonenumber: data.phoneNumber
                     },
                 });
                 //create a booking record
