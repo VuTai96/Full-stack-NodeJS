@@ -420,6 +420,9 @@ const getListPatientForDoctor = (doctorId, date) => {
                                 { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
                             ]
                         },
+                        {
+                            model: db.Allcode, as: 'timeTypeDataPatient', attributes: ['valueEn', 'valueVi']
+                        }
                     ],
                     raw: true, //ko có raw = true --> ko get dc data mặc dù đã thêm ở file config
                     nest: true
