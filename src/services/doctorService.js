@@ -255,7 +255,7 @@ const bulkCreateSchedule = (reqBody) => {
                     //console.log('schedule', schedule)
                     //findAll for check existing
                     let existing = await db.Schedule.findAll({
-                        where: { doctorId: schedule[0].doctorId, date: (new Date(schedule[0].date)).getTime() },
+                        where: { doctorId: schedule[0].doctorId, date: '' + (new Date(schedule[0].date)).getTime() },
                         attributes: ['doctorId', 'date', 'timeType', 'maxNumber']
                     })
                     //format existing
