@@ -59,6 +59,61 @@ const sendSimpleEmail = async (dataSend) => {
     });
 
 }
+
+const setHTMLToSendRemedy = (dataSend) => {
+    let result = ''
+    if (dataSend.language === 'vi') {
+        result = `
+        <h3>Xin chào ${dataSend.patientName}!</h3>
+        <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên bookingcare xác nhận thành công</p>
+        <div>Xin chân thành cảm ơn!</div>
+        <div>File đơn thuốc,hóa đơn khám bệnh</div>
+        `
+    }
+    if (dataSend.language === 'en') {
+        result = `
+    <h3>Dear ${dataSend.patientName}!</h3>
+    <p>You received this email because you booked an online medical appointment on bookingcare confirm success</p>
+    <div>thanks and best regards!</div>
+    <div>File remedy/bill</div>
+    `
+    }
+    return result
+}
+const sendRemedyEmail = (dataSend) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: process.env.EMAIL_APP, // generated ethereal user
+                    pass: process.env.EMAIL_APP_PASSWORD, // generated ethereal password
+                },
+            });
+
+            let info = await transporter.sendMail({
+                from: '"BabyShark 👻" <vutai13196@gmail.com>', // sender address
+                to: dataSend.email, // list of receivers
+                subject: "Thông tin đặt lịch khám bệnh", // Subject line
+                // text: "Hello world?", // plain text body
+                attachments: [
+                    {   // define custom content type for the attachment
+                        filename: 'remedy',
+                        path: dataSend.imageBase64
+                    }
+                ],
+                html: setHTMLToSendRemedy(dataSend)
+            });
+            resolve()
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
-    sendSimpleEmail
+    sendSimpleEmail,
+    sendRemedyEmail
 }
