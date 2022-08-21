@@ -1,16 +1,21 @@
+require('dotenv').config();
 
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('de0jbjq1ceobn8', 'onvvdhqupljkwk', "29f43913f91e0bcbedf2db7eef343f5c936f0634d189182943942896b89ceb82", {
-    host: "ec2-34-227-135-211.compute-1.amazonaws.com",
-    dialect: 'postgres',
-    logging: false,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
+const sequelize = new Sequelize(
+    process.env.DB_DATABASE_NAME,
+    process.env.DB_USER_NAME,
+    process.env.DB_PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        dialect: 'postgres',
+        logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
         }
-    }
-});
+    });
 
 let connectDB = async () => {
     try {

@@ -3,8 +3,8 @@ import CRUDService from "../services/CRUDService";
 
 const getHomePage = async (req, res) => {
     try {
-        let data = await db.User.findAll();  // phải là db.User đúng với return trong file user.js
-        return res.render('homePage.ejs', { data: JSON.stringify(data) })
+        // let data = await db.User.findAll();  // phải là db.User đúng với return trong file user.js
+        return res.render('homePage.ejs', { data: JSON.stringify() })
     } catch (error) {
         console.log(error)
     }
